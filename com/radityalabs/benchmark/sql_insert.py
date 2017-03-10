@@ -1,9 +1,12 @@
 import mysql.connector
 import csv
 import requests
-from HTMLParser import HTMLParser
+import sys
+
 from BeautifulSoup import BeautifulSoup
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 csv.field_size_limit(500 * 1024 * 1024)
 
 db = mysql.connector.connect(user='root', password='',
@@ -30,14 +33,12 @@ class Parser:
         self.html = BeautifulSoup(self.request.text)
         self.sentiment_collection = self.html.body.find('div', attrs={'class': 'span-9 last'})
         self.collection_sentiment = self.sentiment_collection.findAll('li')
-
+        self.positive_value = "0"
+        self.negative_value = "0"
+        self.neutral_value = "0"
+        self.polarity_value = "0"
         for item in self.collection_sentiment:
             self.sentiment_result = item.text
-            self.positive_value = "0"
-            self.negative_value = "0"
-            self.neutral_value = "0"
-            self.polarity_value = "0"
-
             if "pos:" in self.sentiment_result:
                 self.positive = self.sentiment_result.split(None)
                 self.positive_value = self.positive[1]

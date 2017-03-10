@@ -2,9 +2,9 @@
  authorId BIGINT NOT NULL AUTO_INCREMENT,
    authorName VARCHAR(255),
    reviewBody TEXT,
+   positive double,
+   negative double,
    neutral double,
    polarity double,
-   negative double,
-   positive double,
    PRIMARY KEY ( authorId )
 )

@@ -3,7 +3,7 @@ import requests
 
 
 url = 'http://text-processing.com/demo/sentiment/'
-payload = {'language': 'english', 'text': "bad person"}
+payload = {'language': 'english', 'text': "Still auto refreshes, scrolls to top on it's own, so annoying! "}
 r = requests.post(url, data=payload)
 s = r.text
 
@@ -13,13 +13,13 @@ print "Html Response", s
 
 class Parser(HTMLParser):
     def handle_data(self, data):
-        if "pos" in data:
+        if "pos:" in data:
             print data
-        if "neg" in data:
+        if "neg:" in data:
             print data
-        if "polar" in data:
+        if "polar:" in data:
             print data
-        if "neutral" in data:
+        if "neutral:" in data:
             print data
 
 

@@ -81,11 +81,15 @@ def do_sentiment_analysis(review_id, review_name, review_body):
 
 with open(collection, 'rb') as csvfile:
     documents = csv.reader(csvfile, delimiter=' ', quotechar='|')
+    index = 0
     for row in documents:
+        index += 1
+        if index < 823:
+            continue
         doc = ' '.join(row)
         doc_array = doc.split(',')
         reviewId = doc_array[0]
-        reviewName = doc_array[3]
+        reviewName = doc_array[3].replace('"', '')
         reviewBody = doc_array[4].replace('"', '')
         do_sentiment_analysis(reviewId, reviewName, reviewBody)
 

@@ -1,6 +1,7 @@
 from HTMLParser import HTMLParser
 import requests
 
+
 url = 'http://text-processing.com/demo/sentiment/'
 payload = {'language': 'english', 'text': "bad person"}
 r = requests.post(url, data=payload)

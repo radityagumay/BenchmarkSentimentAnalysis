@@ -1,0 +1,10 @@
+ CREATE table review (
+ authorId BIGINT NOT NULL AUTO_INCREMENT,
+   authorName VARCHAR(255),
+   reviewBody TEXT,
+   neutral double,
+   polarity double,
+   negative double,
+   positive double,
+   PRIMARY KEY ( authorId )
+)

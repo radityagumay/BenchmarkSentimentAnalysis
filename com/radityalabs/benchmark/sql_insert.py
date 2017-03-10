@@ -16,7 +16,7 @@ collection = "collection.csv"
 url = 'http://text-processing.com/demo/sentiment/'
 
 
-class Parser(HTMLParser):
+class Parser:
     def __init__(self, review_id, review_name, review_body):
         self.review_id = review_id
         self.review_name = reviewName
@@ -25,42 +25,51 @@ class Parser(HTMLParser):
         print "reviewName", review_name
         print "reviewBody", review_body
 
-        # HTMLParser.__init__(self)
-        # self.feed(self.request.text)
         payload = {'language': 'english', 'text': review_body}
         self.request = requests.post(url, data=payload)
         self.html = BeautifulSoup(self.request.text)
-        # print parsed_html.body.find('div', attrs={'class': 'container'}).text
         self.sentiment_collection = self.html.body.find('div', attrs={'class': 'span-9 last'})
         self.collection_sentiment = self.sentiment_collection.findAll('li')
+
         for item in self.collection_sentiment:
             self.sentiment_result = item.text
-            print self.sentiment_result
+            self.positive_value = "0"
+            self.negative_value = "0"
+            self.neutral_value = "0"
+            self.polarity_value = "0"
 
-        #self.num_of_collection = len(self.collection_sentiment)
-        #print self.num_of_collection
+            if "pos:" in self.sentiment_result:
+                self.positive = self.sentiment_result.split(None)
+                self.positive_value = self.positive[1]
+                print "positive", self.positive_value
+            if "neg:" in self.sentiment_result:
+                self.negative = self.sentiment_result.split(None)
+                self.negative_value = self.negative[1]
+                print "negative", self.negative_value
+            if "neutral:" in self.sentiment_result:
+                self.neutral = self.sentiment_result.split(None)
+                self.neutral_value = self.neutral[1]
+                print "neutral", self.neutral_value
+            if "polar:" in self.sentiment_result:
+                self.polarity = self.sentiment_result.split(None)
+                self.polarity_value = self.polarity[1]
+                print "polarity", self.polarity_value
 
-        # print self.html
-
-    def handle_data(self, data):
-        if "pos:" in data:
-            positive = data.split(None)
-            val_pos = positive[1]
-            insert(self.review_id, self.reviewName, self.review_body, val_pos, 0, 0, 0)
-            print "positive", positive[1]
-        if "neg:" in data:
-            negative = data.split(None)
-            print "negative", negative[1]
-        if "neutral:" in data:
-            neutral = data.split(None)
-            print "neutral", neutral[1]
-        if "polar:" in data:
-            polarity = data.split(None)
-            print "polarity", polarity[1]
+        insert(review_id, review_name, review_body,
+               self.positive_value, self.negative_value,
+               self.neutral_value, self.polarity_value)
 
 
 def insert(review_id, review_name, review_body, positive, negative, neutral, polarity):
-    query = "INSERT OR UPDATE INTO " + table_name + " VALUES (" + query_plain + ")"
+    query_plain = review_id + "," + \
+                  '"' + review_name + '"' + "," + \
+                  '"' + review_body + '"' + "," + \
+                  positive + "," + \
+                  negative + "," + \
+                  neutral + "," + \
+                  polarity
+    print query_plain
+    query = "REPLACE INTO " + table_name + " VALUES (" + query_plain + ")"
     cursor.execute(query)
     db.commit()
 

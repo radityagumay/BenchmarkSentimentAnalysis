@@ -32,9 +32,13 @@ class Parser(HTMLParser):
         self.html = BeautifulSoup(self.request.text)
         # print parsed_html.body.find('div', attrs={'class': 'container'}).text
         self.sentiment_collection = self.html.body.find('div', attrs={'class': 'span-9 last'})
-        #self.html_sentiment_collection = BeautifulSoup(self.sentiment_collection)
-        print self.sentiment_collection
+        self.collection_sentiment = self.sentiment_collection.findAll('li')
+        for item in self.collection_sentiment:
+            self.sentiment_result = item.text
+            print self.sentiment_result
 
+        #self.num_of_collection = len(self.collection_sentiment)
+        #print self.num_of_collection
 
         # print self.html
 

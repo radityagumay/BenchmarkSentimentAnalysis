@@ -84,7 +84,7 @@ with open(collection, 'rb') as csvfile:
     index = 0
     for row in documents:
         index += 1
-        if index < 823:
+        if index < 9325:
             continue
         doc = ' '.join(row)
         doc_array = doc.split(',')

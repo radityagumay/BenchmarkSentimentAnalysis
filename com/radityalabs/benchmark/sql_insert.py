@@ -22,14 +22,20 @@ url = 'http://text-processing.com/demo/sentiment/'
 class Parser:
     def __init__(self, review_id, review_name, review_body):
         self.review_id = review_id
-        self.review_name = reviewName
+        self.review_name = review_name
         self.review_body = review_body
-        print "id", review_id
-        print "reviewName", review_name
-        print "reviewBody", review_body
+        print "id", self.review_id
+        print "reviewName", self.review_name
+        print "reviewBody", self.review_body
 
         payload = {'language': 'english', 'text': review_body}
-        self.request = requests.post(url, data=payload)
+        try:
+            self.request = requests.post(url, data=payload)
+        except requests.exceptions.RequestException as e:
+            print "run service again", e
+            print run()
+            return
+
         self.html = BeautifulSoup(self.request.text)
         self.sentiment_collection = self.html.body.find('div', attrs={'class': 'span-9 last'})
         self.collection_sentiment = self.sentiment_collection.findAll('li')
@@ -69,7 +75,6 @@ def insert(review_id, review_name, review_body, positive, negative, neutral, pol
                   negative + "," + \
                   neutral + "," + \
                   polarity
-    print query_plain
     query = "REPLACE INTO " + table_name + " VALUES (" + query_plain + ")"
     cursor.execute(query)
     db.commit()
@@ -79,18 +84,31 @@ def do_sentiment_analysis(review_id, review_name, review_body):
     Parser(review_id, review_name, review_body)
 
 
-with open(collection, 'rb') as csvfile:
-    documents = csv.reader(csvfile, delimiter=' ', quotechar='|')
-    index = 0
-    for row in documents:
-        index += 1
-        if index < 9325:
-            continue
-        doc = ' '.join(row)
-        doc_array = doc.split(',')
-        reviewId = doc_array[0]
-        reviewName = doc_array[3].replace('"', '')
-        reviewBody = doc_array[4].replace('"', '')
-        do_sentiment_analysis(reviewId, reviewName, reviewBody)
+def get_last_authorid():
+    query = "SELECT authorId FROM sentiment_analysis.review order by authorId desc limit 1"
+    cursor.execute(query)
+    data = cursor.fetchone()
+    return data[0] + 2
+
+
+def run():
+    with open(collection, 'rb') as csvfile:
+        documents = csv.reader(csvfile, delimiter=' ', quotechar='|')
+        index = 24846
+        last_index = get_last_authorid()
+        for row in documents:
+            index += 1
+            if index < last_index:
+                continue
+            else:
+                doc = ' '.join(row)
+                doc_array = doc.split(',')
+                review_id = doc_array[0]
+                review_name = doc_array[3].replace('"', '')
+                review_body = doc_array[4].replace('"', '')
+                do_sentiment_analysis(review_id, review_name, review_body)
+
+
+run()
 
 db.close()

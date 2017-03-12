@@ -88,19 +88,21 @@ def get_last_authorid():
     query = "SELECT authorId FROM sentiment_analysis.review order by authorId desc limit 1"
     cursor.execute(query)
     data = cursor.fetchone()
-    return data[0] + 2
+    return data[0] + 1
 
 
 def run():
     with open(collection, 'rb') as csvfile:
         documents = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        index = 24846
+        index = 31996
         last_index = get_last_authorid()
         for row in documents:
             index += 1
             if index < last_index:
                 continue
             else:
+                # print "index", index
+                # print "last_index", last_index
                 doc = ' '.join(row)
                 doc_array = doc.split(',')
                 review_id = doc_array[0]

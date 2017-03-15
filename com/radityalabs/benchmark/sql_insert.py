@@ -28,7 +28,6 @@ class Parser:
         print "reviewName", self.review_name
         print "reviewBody", self.review_body
 
-        payload = {'language': 'english', 'text': review_body}
         try:
             self.request = requests.post(url, data=payload)
         except requests.exceptions.RequestException as e:
@@ -103,21 +102,21 @@ def get_last_authorid():
 def run():
     with open(collection, 'rb') as csvfile:
         documents = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        index = 0
-        last_index = get_last_authorid()
+        # index = 0
+        # last_index = get_last_authorid()
         for row in documents:
-            index += 1
-            if index < last_index:
-                continue
-            else:
-                # print "index", index
-                # print "last_index", last_index
-                doc = ' '.join(row)
-                doc_array = doc.split(',')
-                review_id = doc_array[0]
-                review_name = doc_array[3].replace('"', '')
-                review_body = doc_array[4].replace('"', '')
-                do_sentiment_analysis(review_id, review_name, review_body)
+            # index += 1
+            # if index < last_index:
+            #    continue
+            # else:
+            # print "index", index
+            # print "last_index", last_index
+            doc = ' '.join(row)
+            doc_array = doc.split(',')
+            review_id = doc_array[0]
+            review_name = doc_array[3].replace('"', '')
+            review_body = doc_array[4].replace('"', '')
+            do_sentiment_analysis(review_id, review_name, review_body)
 
 
 run()

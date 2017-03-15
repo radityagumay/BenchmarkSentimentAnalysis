@@ -12,12 +12,12 @@ CREATE table review (
 CREATE table review_label_benchmark (
     authorId BIGINT NOT NULL AUTO_INCREMENT,
     authorName VARCHAR(255),
+    googleId VARCHAR(255),
     reviewBody TEXT,
     positive double,
     negative double,
     neutral double,
-    polarity double,
-    label int,
+    label VARCHAR(255),
     PRIMARY KEY ( authorId )
 )
 

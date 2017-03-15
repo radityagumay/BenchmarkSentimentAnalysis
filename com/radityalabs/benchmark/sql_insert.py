@@ -14,8 +14,8 @@ db = mysql.connector.connect(user='root', password='',
                              database='sentiment_analysis')
 cursor = db.cursor()
 
-table_name = "review"
-collection = "collection.csv"
+table_name = "review_label_benchmark"
+collection = "full_collection.csv"
 url = 'http://text-processing.com/demo/sentiment/'
 
 
@@ -62,19 +62,28 @@ class Parser:
                 self.polarity_value = self.polarity[1]
                 print "polarity", self.polarity_value
 
+        self.label = -1
+        if self.negative_value < self.positive_value:
+            self.label = 1  # positive
+        elif self.negative_value > self.positive_value:
+            self.label = 0  # negative
+        else:
+            self.label = 2  # neutral
+
         insert(review_id, review_name, review_body,
                self.positive_value, self.negative_value,
-               self.neutral_value, self.polarity_value)
+               self.neutral_value, self.polarity_value, self.label)
 
 
-def insert(review_id, review_name, review_body, positive, negative, neutral, polarity):
+def insert(review_id, review_name, review_body, positive, negative, neutral, polarity, label):
     query_plain = review_id + "," + \
                   '"' + review_name + '"' + "," + \
                   '"' + review_body + '"' + "," + \
                   positive + "," + \
                   negative + "," + \
                   neutral + "," + \
-                  polarity
+                  polarity + "," + \
+                  label
     query = "REPLACE INTO " + table_name + " VALUES (" + query_plain + ")"
     cursor.execute(query)
     db.commit()
@@ -85,16 +94,16 @@ def do_sentiment_analysis(review_id, review_name, review_body):
 
 
 def get_last_authorid():
-    query = "SELECT authorId FROM sentiment_analysis.review order by authorId desc limit 1"
+    query = "SELECT authorId FROM sentiment_analysis." + table_name + " order by authorId desc limit 1"
     cursor.execute(query)
     data = cursor.fetchone()
-    return data[0] + 1
+    return data[0]
 
 
 def run():
     with open(collection, 'rb') as csvfile:
         documents = csv.reader(csvfile, delimiter=' ', quotechar='|')
-        index = 31996
+        index = 0
         last_index = get_last_authorid()
         for row in documents:
             index += 1

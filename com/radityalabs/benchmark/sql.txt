@@ -1,10 +1,47 @@
- CREATE table review (
+CREATE table review (
+    authorId BIGINT NOT NULL AUTO_INCREMENT,
+    authorName VARCHAR(255),
+    reviewBody TEXT,
+    positive double,
+    negative double,
+    neutral double,
+    polarity double,
+    PRIMARY KEY ( authorId )
+)
+
+CREATE table review_label_benchmark (
+    authorId BIGINT NOT NULL AUTO_INCREMENT,
+    authorName VARCHAR(255),
+    reviewBody TEXT,
+    positive double,
+    negative double,
+    neutral double,
+    polarity double,
+    label int,
+    PRIMARY KEY ( authorId )
+)
+
+CREATE table sentiment_review (
+    authorId BIGINT NOT NULL AUTO_INCREMENT,
+    authorName VARCHAR(255),
+    authorGoogleId VARCHAR(255),
+    reviewBody TEXT,
+    positive double,
+    negative double,
+    neutral double,
+    polarity double,
+    PRIMARY KEY ( authorId )
+)
+
+ CREATE table cleansing (
  authorId BIGINT NOT NULL AUTO_INCREMENT,
+ authorDetailImage VARCHAR(255),
+   authorDetailLink VARCHAR(255),
    authorName VARCHAR(255),
    reviewBody TEXT,
-   positive double,
-   negative double,
-   neutral double,
-   polarity double,
+   reviewDate VARCHAR(255),
+   reviewLink VARCHAR(255),
+   reviewRating VARCHAR(5),
+   googlePlayPageNumber BIGINT,
    PRIMARY KEY ( authorId )
 )

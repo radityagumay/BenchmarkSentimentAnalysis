@@ -71,6 +71,12 @@ def get_last_authorid():
     return data[0] + 1
 
 
+def is_blank(myString):
+    if myString and myString.strip():
+        return False
+    return True
+
+
 def run():
     with open(csv_name, 'rU') as csvfile:
         documents = csv.reader(csvfile)
@@ -80,7 +86,6 @@ def run():
         for row in documents:
             index += 1
             if index < last_index:
-                print "index", index
                 continue
             else:
                 doc = '[===]'.join(row)
@@ -88,7 +93,12 @@ def run():
                 review_id = doc_array[0]
                 review_google_id = doc_array[2]
                 review_name = doc_array[3].replace('"', '').replace(",", "").replace('\'', '')
-                review_body = doc_array[4].replace('"', '').replace(",", "").replace('\'', '')
+                is_empty = is_blank(doc_array[4])
+                if is_empty:
+                    review_body = "no review consist"
+                else:
+                    review_body = doc_array[4].replace('"', '').replace(",", "").replace('\'', '')
+
                 request_api(review_id, review_name, review_google_id, review_body)
 
 

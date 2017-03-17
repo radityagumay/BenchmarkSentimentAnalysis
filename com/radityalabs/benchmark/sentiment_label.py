@@ -3,6 +3,7 @@ import mysql.connector
 import csv
 import requests
 import sys
+import re
 import unicodedata
 
 # for large load data
@@ -77,11 +78,36 @@ def is_blank(myString):
     return True
 
 
+def insert_blank(authorId, authorName, googleId, reviewBody, positive, negative, neutral):
+    if "reviewId" in googleId:
+        cleanId = googleId
+    else:
+        obj = googleId.split('id=')
+        cleanId = obj[1]
+
+    query_plain = authorId + "," + \
+                  "'" + authorName + "'" + "," + \
+                  "'" + cleanId + "'" + "," + \
+                  "'" + reviewBody + "'" + "," + \
+                  str(positive) + "," + \
+                  str(negative) + "," + \
+                  str(neutral) + "," + \
+                  "' neutral'"
+
+    print query_plain
+    query = "REPLACE INTO " + table_name + " VALUES (" + query_plain + ")"
+    try:
+        cursor.execute(query)
+        database.commit()
+    except:
+        database.rollback()
+
+
 def run():
     with open(csv_name, 'rU') as csvfile:
         documents = csv.reader(csvfile)
         index = 0
-        last_index = get_last_authorid()
+        last_index = 32826  # get_last_authorid()
         print "last index", last_index
         for row in documents:
             index += 1
@@ -96,10 +122,15 @@ def run():
                 is_empty = is_blank(doc_array[4])
                 if is_empty:
                     review_body = "no review consist"
+                    insert_blank(review_id, review_name, review_google_id, review_body, 0.0, 0.0, 0.0)
                 else:
                     review_body = doc_array[4].replace('"', '').replace(",", "").replace('\'', '')
-
-                request_api(review_id, review_name, review_google_id, review_body)
+                    is_valid = bool(re.match('[a-zA-Z]', review_body, re.IGNORECASE))
+                    if is_valid:
+                        request_api(review_id, review_name, review_google_id, review_body)
+                    else:
+                        review_body = "no review consist"
+                        insert_blank(review_id, review_name, review_google_id, review_body, 0.0, 0.0, 0.0)
 
 
 run()

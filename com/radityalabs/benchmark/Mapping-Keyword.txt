@@ -1,0 +1,37 @@
+[topic categorized keyword mapping]
+
+1 [Crashed]
+ - Crash
+ - Crashed
+ - Crashes
+ - Force Closed
+ - Hung up
+ - Lagging
+ - Lag
+ - Freeze
+ - Freezes
+ - Freezing
+
+2. [User Interface]
+ - UI
+ - Explore
+ - TAB
+ - Smooth
+ - Uniqueness
+ - Theme
+
+3. [Feature]
+ - Features
+ - Feature
+ - Text Limit
+ - Communicate
+ - Browsing
+ - Notification
+ - Notifications
+ - Picture
+ - Pictures
+ - Uploading
+ - Videos
+
+ 4. [Bug]
+ - Cant 

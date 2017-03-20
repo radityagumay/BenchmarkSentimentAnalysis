@@ -21,6 +21,19 @@ CREATE table review_label_benchmark (
     PRIMARY KEY ( authorId )
 )
 
+CREATE table review_label_benchmark_with_polarity (
+    authorId BIGINT NOT NULL AUTO_INCREMENT,
+    authorName VARCHAR(255),
+    googleId VARCHAR(255),
+    reviewBody TEXT,
+    positive double,
+    negative double,
+    neutral double,
+    polarity double,
+    label VARCHAR(255),
+    PRIMARY KEY ( authorId )
+)
+
 CREATE table sentiment_review (
     authorId BIGINT NOT NULL AUTO_INCREMENT,
     authorName VARCHAR(255),

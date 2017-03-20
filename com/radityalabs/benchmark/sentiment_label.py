@@ -107,7 +107,7 @@ def run():
     with open(csv_name, 'rU') as csvfile:
         documents = csv.reader(csvfile)
         index = 0
-        last_index = 32826  # get_last_authorid()
+        last_index = get_last_authorid()
         print "last index", last_index
         for row in documents:
             index += 1

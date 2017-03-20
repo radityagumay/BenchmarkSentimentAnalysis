@@ -1,3 +1,6 @@
+#http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB
+#http://scikit-learn.org/stable/modules/naive_bayes.html
+
 from sklearn import datasets
 from sklearn.naive_bayes import GaussianNB
 

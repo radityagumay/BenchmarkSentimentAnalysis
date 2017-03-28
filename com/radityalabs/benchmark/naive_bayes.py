@@ -1,5 +1,7 @@
 #http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.GaussianNB.html#sklearn.naive_bayes.GaussianNB
 #http://scikit-learn.org/stable/modules/naive_bayes.html
+#http://machinelearningmastery.com/naive-bayes-classifier-scratch-python/
+#http://scikit-learn.org/stable/tutorial/text_analytics/working_with_text_data.html
 
 from sklearn import datasets
 from sklearn.naive_bayes import GaussianNB

@@ -1,17 +1,16 @@
-import mysql.connector
+import pymysql.connector
 import csv
 import requests
 import sys
 
-from BeautifulSoup import BeautifulSoup
+import bs4
 
-reload(sys)
 sys.setdefaultencoding('utf8')
 csv.field_size_limit(500 * 1024 * 1024)
 
-db = mysql.connector.connect(user='root', password='',
-                             host='127.0.0.1',
-                             database='sentiment_analysis')
+db = pymysql.connector.connect(user='root', password='',
+                               host='127.0.0.1',
+                               database='sentiment_analysis')
 cursor = db.cursor()
 
 table_name = "review_label_benchmark"
@@ -24,18 +23,18 @@ class Parser:
         self.review_id = review_id
         self.review_name = review_name
         self.review_body = review_body
-        print "id", self.review_id
-        print "reviewName", self.review_name
-        print "reviewBody", self.review_body
+        print("id", self.review_id)
+        print("reviewName", self.review_name)
+        print("reviewBody", self.review_body)
 
         try:
             self.request = requests.post(url, data=payload)
         except requests.exceptions.RequestException as e:
-            print "run service again", e
-            print run()
+            print("run service again", e)
+            print(run())
             return
 
-        self.html = BeautifulSoup(self.request.text)
+        self.html = bs4.BeautifulSoup(self.request.text)
         self.sentiment_collection = self.html.body.find('div', attrs={'class': 'span-9 last'})
         self.collection_sentiment = self.sentiment_collection.findAll('li')
         self.positive_value = "0"
@@ -47,19 +46,19 @@ class Parser:
             if "pos:" in self.sentiment_result:
                 self.positive = self.sentiment_result.split(None)
                 self.positive_value = self.positive[1]
-                print "positive", self.positive_value
+                print("positive", self.positive_value)
             if "neg:" in self.sentiment_result:
                 self.negative = self.sentiment_result.split(None)
                 self.negative_value = self.negative[1]
-                print "negative", self.negative_value
+                print("negative", self.negative_value)
             if "neutral:" in self.sentiment_result:
                 self.neutral = self.sentiment_result.split(None)
                 self.neutral_value = self.neutral[1]
-                print "neutral", self.neutral_value
+                print("neutral", self.neutral_value)
             if "polar:" in self.sentiment_result:
                 self.polarity = self.sentiment_result.split(None)
                 self.polarity_value = self.polarity[1]
-                print "polarity", self.polarity_value
+                print("polarity", self.polarity_value)
 
         self.label = -1
         if self.negative_value < self.positive_value:

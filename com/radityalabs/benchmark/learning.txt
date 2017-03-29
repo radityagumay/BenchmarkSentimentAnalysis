@@ -1,1 +1,12 @@
 http://www.laurentluce.com/posts/twitter-sentiment-analysis-using-python-and-nltk/
+http://textanalytics.blog/2016/12/20/starting-nltk-with-pycharm-sentence-detection/
+http://www.nltk.org/book/ch01.html
+http://ataspinar.com/2016/02/15/sentiment-analysis-with-the-naive-bayes-classifier/
+https://www.dataquest.io/blog/naive-bayes-tutorial/
+http://streamhacker.com/2010/05/10/text-classification-sentiment-analysis-naive-bayes-classifier/
+https://marcobonzanini.com/2015/01/19/sentiment-analysis-with-python-and-scikit-learn/
+http://www.cs.cornell.edu/people/pabo/movie-review-data/
+http://chengjunwang.com/en/2012/03/sentiment-analysi-with-python/
+http://www.nltk.org/howto/sentiment.html
+http://www.nltk.org/book/ch06.html
+http://stackoverflow.com/questions/20827741/nltk-naivebayesclassifier-training-for-sentiment-analysis

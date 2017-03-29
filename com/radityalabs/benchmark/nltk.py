@@ -1,3 +1,5 @@
+import nltk
+
 # tuple of positive
 pos_tweets = [('I love this car', 'positive'),
               ('This view is amazing', 'positive'),
@@ -21,8 +23,6 @@ def populate_tweets():
     return tweets
 
 
-print "tweets", populate_tweets()
-
 test_tweets = [
     (['feel', 'happy', 'this', 'morning'], 'positive'),
     (['larry', 'friend'], 'positive'),
@@ -30,10 +30,24 @@ test_tweets = [
     (['house', 'not', 'great'], 'negative'),
     (['your', 'song', 'annoying'], 'negative')]
 
-word_features = get_word_features(get_words_in_tweets(tweets))
 
 def get_words_in_tweets(tweets):
     all_words = []
     for (words, sentiment) in tweets:
-      all_words.extend(words)
+        all_words.extend(words)
     return all_words
+
+
+def get_word_features(wordlist):
+    wordlist = nltk.sorted(wordlist)
+    word_features = wordlist.keys()
+    return word_features
+
+
+get_words_in_tweets = get_words_in_tweets(populate_tweets())
+get_word_features = get_word_features(get_words_in_tweets)
+
+print("get_words_in_tweets", get_words_in_tweets)
+print("get_word_features", get_word_features)
+
+word_features = get_word_features
